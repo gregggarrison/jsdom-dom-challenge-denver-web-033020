@@ -1,11 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    const likesHash = {}
+
     let counter = document.getElementById("counter")
 
     let count = setInterval(function () {
         counter.innerText++;
     }, 1000);
-
 
     let minus = document.getElementById("minus")
     let plus = document.getElementById("plus")
@@ -15,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let submitButton = document.getElementById("submit")
     let commentList = document.getElementById("list")
-
 
     minus.addEventListener("click", function (e) {
         counter.innerText--
@@ -57,16 +57,32 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("comment-form").reset()
     })
 
-    //taking a fucking a break
     heart.addEventListener("click", function (e) {
-        let freq = event.count
-        console.log(freq)
-        let li = document.createElement("li")
-        li.innerHTML = `${counter.innerText} has this many likes: ${freq}`
-        
-        
-        // counter.innerText
-        likes.appendChild(li)
+        removeAllLi()
+        const number = counter.innerText
+        if (likesHash[number] === undefined) {
+            likesHash[number] = 1
+        }
+        else {
+            likesHash[number]++
+        }
+
+        const keys = Object.keys(likesHash)
+        keys.forEach((key) => {
+
+            let li = document.createElement("li")
+            li.className = "count-display"
+            li.innerHTML = `${key} has this many likes: ${likesHash[key]}`
+            likes.appendChild(li)
+        })
+
+        function removeAllLi() {
+            const display = document.getElementsByClassName('count-display')
+            Array.from(display).forEach((li) => {
+                li.remove()
+            })
+        }
+
     })
 
 });
